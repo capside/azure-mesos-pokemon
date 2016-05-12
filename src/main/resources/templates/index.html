@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html  xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Pokemon by Capside</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <style>
             #capsidelogo {
                 position: absolute;
@@ -46,11 +46,18 @@
         </style>
     </head>
     <body>
-        <img id="capsidelogo" src="avatar-capside.png" alt="capside logo">
-        <img id="pokemonlogo" src="pokemon-logo.svg" alt="pokemon logo">
+        <img id="capsidelogo" src="avatar-capside.png" alt="capside logo"/>
+        <img id="pokemonlogo" src="pokemon-logo.svg" alt="pokemon logo"/>
         <div class="card">
-            <img src="{{pokemon.url}}" alt="{{pokemon.name}}">
-            <h2>{{pokemon.name}}</h2>
+            <img th:src="${pokemon.url}" th:alt="${pokemon.name}"/> 
+            <h2 th:text="${pokemon.name}">pokemon</h2>
+        </div>
+        
+        <div>
+            <h3>Environment</h3>
+            <ul>
+                <li th:each="entry : ${env}" th:text="${entry.key + ' ' + entry.value}">En las Orillas del Sar</li>
+            </ul>
         </div>
     </body>
 </html>

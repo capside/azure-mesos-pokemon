@@ -5,15 +5,19 @@
  */
 package com.capside.pokemondemo;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.text.MessageFormat;
 import java.util.Map;
+import java.util.Set;
 import lombok.SneakyThrows;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  *
@@ -21,27 +25,42 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @Scope(scopeName = "singleton")
+@Log
 public class PokemonCtrl {
 
-    private final ObjectMapper mapper;
-    private final PokemonRepository repository;
+    private final ConfigurableApplicationContext ctx;
     private final Pokemon pokemon;
 
     @Autowired
-    public PokemonCtrl(ObjectMapper mapper, PokemonRepository repository) {
-        this.mapper = mapper;
-        this.repository = repository;
+    public PokemonCtrl(PokemonRepository repository, ApplicationContext ctx) {
         this.pokemon = repository.getRandomPokemon();
+        this.ctx = (ConfigurableApplicationContext) ctx;
     }
 
-    @RequestMapping("/")
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     String index(Map<String, Object> model) {
         String hostname = System.getenv("HOSTNAME") == null ? "" : System.getenv("HOSTNAME");
         model.put("container", hostname);
         model.put("pokemon", pokemon);
-
-        return "index";
+        
+        Set<Map.Entry<String,String>> env = System.getenv().entrySet();
+        model.put("env", env);
+        
+        return "index"; 
     }
 
+    @RequestMapping(value = "/", method = RequestMethod.DELETE)
+    @ResponseBody
+    Pokemon shutdown() {
+        log.warning(MessageFormat.format("{0} doesn''t want to fight, leaves the room now.", pokemon.getName()));
+        new Thread(new Runnable() { 
+            @Override @SneakyThrows
+            public void run() { 
+                Thread.sleep(1000);
+                ctx.close(); 
+            }
+        }).start();
+        return this.pokemon;
+    }
 
 }
