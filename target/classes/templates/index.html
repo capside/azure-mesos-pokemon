@@ -32,7 +32,7 @@
                 text-align : center;
             }
             
-            .card img {
+            .card > img {
                 min-width : 400px;
             }
             
@@ -43,6 +43,20 @@
                 color : tomato;
             }
             
+            button {
+                border : 1px solid silver;
+                padding: 6px;
+                padding-bottom: 20px;
+                margin : 4px;
+                
+                transition: background 2s linear;
+                -webkit-transition: background 2s linear;
+                -moz-transition: background 2s linear;                
+            }
+
+            button img {
+                width: 120px;
+            }
         </style>
     </head>
     <body>
@@ -51,6 +65,8 @@
         <div class="card">
             <img th:src="${pokemon.url}" th:alt="${pokemon.name}"/> 
             <h2 th:text="${pokemon.name}">pokemon</h2>
+            <h4 th:text="${task}">task</h4>
+            <div id="arena"></div>
         </div>
         <!--
         <div>
@@ -60,5 +76,111 @@
             </ul>
         </div>
         -->
+        <script src="https://code.jquery.com/jquery-2.2.3.min.js"
+                integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="
+                crossorigin="anonymous"></script>
+        <script>            
+            //<![CDATA[
+            $(document).ready(function() {
+              var localTaskId = $('h4').text(); 
+              var currentTasks = {};
+
+              function attackTask(task) {
+                  var host = task.host;
+                  task.$elem.css({ backgroundColor : 'orange'});
+                  var url = '/attack/' + host;
+                  $.post(url)
+                   .done(function() {
+                      task.$elem
+                        .css({ backgroundColor : 'red'})
+                        .delay(2000)
+                        .fadeOut(function() {
+                            $(this).detach();
+                        });
+                      console.info('I have attacked a little creature.', task.pokemon);  
+                  }).error(function(error) {
+                      task.$elem.css({ backgroundColor : 'white'});
+                      console.error('My attack failed.', error)
+                  });
+              }
+
+              function showNewTask(task) {
+                  var $arena = $('#arena');
+                  var $img = $('<img>')
+                    .attr({ alt : task.pokemon.name, src : task.pokemon.url});
+                  var taskIdentifier = task.id.match(/^.*\.([0-9a-z]{8})-/)[1];
+                  var taskPokemonName = task.pokemon.name;
+                  var $button = $('<button>')
+                        .attr('type', 'button')
+                        .append($img)
+                        .append($('<h3>').text(taskPokemonName + ' ' + taskIdentifier));
+                  $button.click(function() {
+                      attackTask(task);
+                  });
+                  $button.hide().appendTo($arena).fadeIn('slow');
+                  return $button;
+              }
+              
+              function removeTask(task) {
+                  /* This function is invoked after the task has been 
+                   * sustituted so actually it has already been removed.
+                   * TODO: improve the state mechanismo to make the 
+                   * life cycle more elegant.
+                   *  
+                  task.$elem.fadeOut(function() {
+                      task.$elem.detach();
+                  });
+                  */
+              }
+              
+              function updateTasks(newTasks) {
+                  for (var taskKey in currentTasks) {
+                      var task = newTasks[taskKey];
+                      if (task === undefined) {
+                          currentTask = currentTasks[taskKey];
+                          removeTask(currentTask);
+                      }
+                  }
+                  for (var taskKey in newTasks) {
+                      var task = currentTasks[taskKey];
+                      if (task === undefined) {
+                          var newTask = newTasks[taskKey];
+                          newTask.$elem = showNewTask(newTask);
+                      }
+                  }
+                  currentTasks = newTasks;
+              }
+        
+              function retreiveTasks() {
+                var url = '/arena';
+                $.getJSON(url)
+                .done(function(allTasks) {
+                    console.info('Looks like we have some neighbors.');
+                    allTasks = allTasks.filter(function(task) {
+                        return task.id !== localTaskId;
+                    });
+                    if (allTasks.length === 0) {
+                        console.info('Well... no. I\'m alone.');
+                    } else {
+                      console.info('Here they are.', allTasks);
+                    }
+                    
+                    var newTasks = {};
+                    for (var taskIdx in allTasks) {
+                        var task = allTasks[taskIdx];
+                        newTasks[task.id] = task;
+                    }
+                    updateTasks(newTasks);
+                }).fail(function(error) {
+                    console.error('Cannot retrieve arena data.', error);
+                });
+              }            
+              setInterval(retreiveTasks, 1000*5);
+            
+            });
+            // ]]>
+        </script>
+        
+        
     </body>
 </html>

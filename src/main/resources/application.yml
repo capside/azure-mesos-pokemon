@@ -1,0 +1,17 @@
+server:
+  port: 8080
+
+spring:
+  application:
+     name: poki
+
+mesos:
+  ip: 172.16.0.5
+
+---
+
+spring:
+  profiles: dev
+  mesos:
+    ip: 127.0.0.1
+  
