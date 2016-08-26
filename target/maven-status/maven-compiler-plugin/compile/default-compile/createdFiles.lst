@@ -5,4 +5,5 @@ com\capside\pokemondemo\PokemonCtrl$1.class
 com\capside\pokemondemo\PokemonRepository.class
 com\capside\pokemondemo\TaskReport.class
 com\capside\pokemondemo\TasksReportService.class
+com\capside\pokemondemo\AttackService.class
 com\capside\pokemondemo\PokemonCtrl.class
