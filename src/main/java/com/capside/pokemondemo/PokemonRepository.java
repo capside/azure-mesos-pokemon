@@ -38,8 +38,8 @@ public class PokemonRepository {
             ObjectMapper mapper = new ObjectMapper();
             List<Pokemon> tmp = mapper.readValue(in, new TypeReference<List<Pokemon>>(){});
             for (Pokemon pokemon : tmp) {
-                String url = "static/images/" + pokemon.getId() + ".png";
-                InputStream pokemonImageStream = cl.getResourceAsStream(url);
+                String url = "images/" + pokemon.getId() + ".png";
+                InputStream pokemonImageStream = cl.getResourceAsStream("static/" + url);
                 if (pokemonImageStream != null) {
                     pokemon.setUrl(url);
                     pokemons.add(pokemon);
