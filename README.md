@@ -1,3 +1,5 @@
+![Pokemon Logo](http://vignette1.wikia.nocookie.net/es.pokemon/images/6/61/Logo_de_Pok%C3%A9mon_(EN).png)
+
 # Instalar las cli
 
 ```
