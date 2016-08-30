@@ -67,7 +67,8 @@ azure resource list %RESOURCE_GROUP% --resource-type Microsoft.Compute/virtualMa
 * Repetir el cambio de tamaño para el grupo privado y público
 
 ```
-azure group deployment create --resource-group %RESOURCE_GROUP% --template-uri vmss-scale-in-or-out.json
+SET VMSS_TEMPLATE=https://raw.githubusercontent.com/gbowerman/azure-myriad/master/vmss-scale-in-or-out.json
+azure group deployment create --resource-group %RESOURCE_GROUP% --template-uri %VMSS_TEMPLATE%
 ```
 
 # Desplegar aplicación
