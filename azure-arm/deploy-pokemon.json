@@ -1,0 +1,41 @@
+{
+  "id": "poki",
+  "cmd": null,
+  "cpus": 1,
+  "mem": 1024,
+  "disk": 0,
+  "instances": 1,
+  "container": {
+    "docker": {
+      "image": "capside/pokemon-java",
+	  "forcePullImage": true,
+      "network": "HOST"
+    },
+    "type": "DOCKER",
+    "volumes": []
+  },
+  "portDefinitions": [
+    {
+      "port": 0,
+      "protocol": "tcp",
+      "name": null,
+      "labels": null
+    }
+  ],
+  "env": {},
+  "labels": {},
+  "healthChecks": [
+    {
+      "protocol": "HTTP",
+      "path": "/",
+      "port": 8080,
+      "gracePeriodSeconds": 300,
+      "intervalSeconds": 60,
+      "timeoutSeconds": 20,
+      "maxConsecutiveFailures": 3
+    }
+  ],
+  "acceptedResourceRoles": [
+    "slave_public"
+  ]
+}

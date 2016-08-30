@@ -1,9 +1,10 @@
-com\capside\pokemondemo\PokemonApplication.class
-com\capside\pokemondemo\Task.class
-com\capside\pokemondemo\Pokemon.class
-com\capside\pokemondemo\PokemonCtrl$1.class
-com\capside\pokemondemo\PokemonRepository.class
-com\capside\pokemondemo\TaskReport.class
-com\capside\pokemondemo\TasksReportService.class
 com\capside\pokemondemo\AttackService.class
+com\capside\pokemondemo\Task.class
+com\capside\pokemondemo\PokemonCtrl$1.class
+com\capside\pokemondemo\TaskReport.class
 com\capside\pokemondemo\PokemonCtrl.class
+com\capside\pokemondemo\PokemonRepository.class
+com\capside\pokemondemo\Pokemon.class
+com\capside\pokemondemo\PokemonRepository$1.class
+com\capside\pokemondemo\PokemonApplication.class
+com\capside\pokemondemo\TasksReportService.class

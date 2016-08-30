@@ -1,0 +1,27 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "dnsNamePrefix": {
+      "value": "ciberadodcos"
+    },
+    "agentCount": {
+      "value": 3
+    },
+    "agentVMSize": {
+      "value": "Standard_A2"
+    },
+    "linuxAdminUsername": {
+      "value": "ciberado"
+    },
+    "orchestratorType": {
+      "value": "DCOS"
+    },
+    "masterCount": {
+      "value": 1
+    },
+    "sshRSAPublicKey": {
+      "value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDNfluAVnhKxS75Ihk5fJKtGdM5WgK6xD9YPLoMrWFqHz2xln6NqYHNZnJmTBl3OcWpYjaqN1wW8m7aHVYMEwhtXaFj52OXMCRem1rMJwuZn/pujZUfuEvn5XCZrxhIBlPYplWVk0qqK3o3uFzljrJ7TSAZJKm1Hx7Jf6yLIqXphArxk/69IrJsFSzI/JMKb/SIXIpVOCU5ep4ClcM2/Yb+5Z+a3OTxDlmDnREhxY4GyA1wWA+neC8AYhcncPLFCfTBOmDck+JjYRXy/a9Dr44uXGAP1C13+6pVAX3Kr5XTHxRfEMeQYTiDYAvl0BDXKsjWFGQUaEqUgHvkgWDOp5Mt javi.moreno@capside.com"
+    }
+  }
+}
