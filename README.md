@@ -21,11 +21,12 @@ azure location list
 ```bash
 set ADMIN_USERNAME=XXXXXXX
 set RESOURCE_GROUP=XXXXXXX
+set DEPLOYMENT_NAME=dcospokemon
 set LOCATION=westeurope
 set TEMPLATE_URI=https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-acs-dcos/azuredeploy.json
 set PARAMFILE=azuredeploy.parameters.json
 
-azure group create -n %RESOURCE_GROUP% -l %LOCATION% --template-uri %TEMPLATE_URI% -e %PARAMFILE%
+azure group create -n %RESOURCE_GROUP% -l %LOCATION% --template-uri %TEMPLATE_URI% -e %PARAMFILE% --name DEPLOYMENT_NAME
 
 azure group deployment show %RESOURCE_GROUP% azuredeploy | grep State
 ```
@@ -106,7 +107,7 @@ curl -X PUT -d "{ \"instances\": 3 }" -H "Content-type: application/json" http:/
 # Limpiar la cuenta
 
 ```
-azure group deployment delete --resource-group %RESOURCE_GROUP%
+azure group deployment delete --resource-group %RESOURCE_GROUP% --name DEPLOYMENT_NAME
 ``` 
  
  
