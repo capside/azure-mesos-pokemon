@@ -61,7 +61,7 @@ ifconfig | grep "inet addr"
 * Revisar vms-scale-in-or-out.json
 
 ```
-azure resource list ciberadodcos --resource-type Microsoft.Compute/virtualMachineScaleSets --json | jq .[].name
+azure resource list %RESOURCE_GROUP% --resource-type Microsoft.Compute/virtualMachineScaleSets --json | jq .[].name
 ``` 
 
 * Repetir el cambio de tamaño para el grupo privado y público
