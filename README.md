@@ -26,7 +26,7 @@ set LOCATION=westeurope
 set TEMPLATE_URI=https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-acs-dcos/azuredeploy.json
 set PARAMFILE=azuredeploy.parameters.json
 
-azure group create -n %RESOURCE_GROUP% -l %LOCATION% --template-uri %TEMPLATE_URI% -e %PARAMFILE% --name DEPLOYMENT_NAME
+azure group create -n %RESOURCE_GROUP% -l %LOCATION% --template-uri %TEMPLATE_URI% -e %PARAMFILE% --name %DEPLOYMENT_NAME%
 
 azure group deployment show %RESOURCE_GROUP% azuredeploy | grep State
 ```
