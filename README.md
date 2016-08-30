@@ -6,21 +6,19 @@ npm install -g azure-cli
 
 # Crear un clúster
 
-(Utiliza ciberado@outlook.es)
-
 * **EDITA azuredeploy.parameters.json**
 
 ```bash
 azure login
 azure config mode arm
 azure account list
-azure account set 4c242bba-bb40-4f3b-b412-464d90b6ef40
+azure account set 4c242bba-XXXX-XXXX-XXXX-464d90b6ef40
 azure location list
 ``` 
 
 ```bash
-set ADMIN_USERNAME=ciberado
-set RESOURCE_GROUP=ciberadodcos
+set ADMIN_USERNAME=XXXXXXX
+set RESOURCE_GROUP=XXXXXXX
 set LOCATION=westeurope
 set TEMPLATE_URI=https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-acs-dcos/azuredeploy.json
 set PARAMFILE=azuredeploy.parameters.json
@@ -102,8 +100,11 @@ curl -s http://localhost/marathon/v2/apps | prettyjson | grep instances
 curl -X PUT -d "{ \"instances\": 3 }" -H "Content-type: application/json" http://localhost/marathon/v2/apps/azureday/v7
 ```
 
- 
+# Limpiar la cuenta
 
+```
+azure group deployment delete --resource-group %RESOURCE_GROUP%
+``` 
  
  
  
