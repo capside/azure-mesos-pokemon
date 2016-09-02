@@ -1,19 +1,16 @@
-# Prerequisitos
 
 ![Pokemon Logo](http://vignette1.wikia.nocookie.net/es.pokemon/images/6/61/Logo_de_Pok%C3%A9mon_(EN).png)
 
-# Instalar las cli
+# Clústers Mesos en Azure con Pokémon
 
-```
-npm install -g azure-cli
-```
+## Prerequisitos
 
 * Necesitarás las *cli* para interactuar con Azure. Instala [nodejs](https://nodejs.org/en/) previamente y a continuación  ```npm install -g azure-cli```
 * También necesitarás *ssh* en tu sistema. Si utilizas Windows la forma más sencilla de tenerlo es instalando [git for Windows](https://git-scm.com/download/win).
 * También tienes que tener una pareja de claves RSA. En Windows **y solo si no tienes previamente clave generada**: ```ssh-keygen -t rsa -b 2048 -C "email@dominio.com"``` y contesta *enter* a todo.
 * Por último descarga este repositorio con ```git clone https://github.com/capside/azure-mesos-pokemon.git``` y ```cd azure-mesos-pokemon```
 
-# Crear un clúster
+## Crear un clúster
 
 * **EDITA azuredeploy.parameters.json** modificando los parámetros correspondientes.
 * Configura las *cli*
@@ -52,7 +49,7 @@ azure group create -n %RESOURCE_GROUP% -l %LOCATION% --template-uri %TEMPLATE_UR
 azure group deployment show %RESOURCE_GROUP% azuredeploy | grep State
 ```
 
-# Gestionar clúster mediante web
+## Gestionar clúster mediante web
 
 ```
 set MASTER=%RESOURCE_GROUP%mgmt.westeurope.cloudapp.azure.com
@@ -61,13 +58,13 @@ start ssh -L 80:localhost:80 -N %ADMIN_USERNAME%@%MASTER% -p 2200
 start http://localhost:80
 ```
 
-# Gestionar Mesos
+## Gestionar Mesos
 
 ```
 start http://localhost:80/mesos
 ```
 
-# Administrar master node
+## Administrar master node
 
 Visualizar cómo la IP pública del máster coincide con la que muestra el panel web.
 
@@ -76,7 +73,7 @@ ssh %ADMIN_USERNAME%@%MASTER% -p 2200
 ifconfig | grep "inet addr"
 ```
 
-# Redefinir el número de instancias en vmss público
+## Redefinir el número de instancias en vmss público
 
 * Revisar vms-scale-in-or-out.json
 
@@ -92,7 +89,7 @@ SET SCALE_TEMPLATE=https://raw.githubusercontent.com/gbowerman/azure-myriad/mast
 azure group deployment create --resource-group %RESOURCE_GROUP% --template-uri %SCALE_TEMPLATE%
 ```
 
-# Desplegar aplicación
+## Desplegar aplicación
 
 * Instalar prettyjson con ```npm install -g prettyjson```
 * Si estás con Windows, instalar [curl](https://curl.haxx.se/download.html)
@@ -105,7 +102,7 @@ azure group deployment create --resource-group %RESOURCE_GROUP% --template-uri %
 curl -X POST http://localhost/marathon/v2/apps -d @deploy-pokemon.json -H "Content-type: application/json" | prettyjson
 ```
 
-# Visualizar el número de contenedores desplegados
+## Visualizar el número de contenedores desplegados
 
 * Visualizar el estado en http://localhost/marathon
 
@@ -114,20 +111,20 @@ start http://%AGENTS%:8080
 curl -s http://localhost/marathon/v2/apps | prettyjson | grep instances
 ```
 
-# Modificar el número de contenedores
+## Modificar el número de contenedores
 
 ```
 curl -X PUT -d "{ \"instances\": 3 }" -H "Content-type: application/json" http://localhost/marathon/v2/apps/poki
 ```
 
-# Comprobar la resiliencia de los contenedores
+## Comprobar la resiliencia de los contenedores
 
 * Recargar la aplicación ```start http://%AGENTS%:8080```
 * Pulsar sobre uno de los Pokémon
 * Visualizar cómo desaparece el contenedor ```start http://localhost/#/nodes/list/``` 
 * En unos segundos reaparecerá un nuevo Pokémon 
 
-# Limpiar la cuenta
+## Limpiar la cuenta
 
 ```
 azure group deployment delete --resource-group %RESOURCE_GROUP% --name %DEPLOYMENT_NAME%
