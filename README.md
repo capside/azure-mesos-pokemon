@@ -11,19 +11,27 @@ npm install -g azure-cli
 * Necesitarás las *cli* para interactuar con Azure. Instala [nodejs](https://nodejs.org/en/) previamente y a continuación  ```npm install -g azure-cli```
 * También necesitarás *ssh* en tu sistema. Si utilizas Windows la forma más sencilla de tenerlo es instalando [git for Windows](https://git-scm.com/download/win).
 * También tienes que tener una pareja de claves RSA. En Windows **y solo si no tienes previamente clave generada**: ```ssh-keygen -t rsa -b 2048 -C "email@dominio.com"``` y contesta *enter* a todo.
- 
+* Por último descarga este repositorio con ```git clone https://github.com/capside/azure-mesos-pokemon.git``` y ```cd azure-mesos-pokemon```
+
 # Crear un clúster
 
 * **EDITA azuredeploy.parameters.json** modificando los parámetros correspondientes.
+* Configura las *cli*
 
 ```bash
-azure login
 azure config mode arm
+azure login
+``` 
+* Asegúrate de que tienes una suscripción correctamente activada
+* Si es tu primera vez es necesario registrar el servicio de contenedores
+
+```bash
 azure account list
-azure account set 4c242bba-XXXX-XXXX-XXXX-464d90b6ef40
-azure location list
+azure account set <tu_número_de_cuenta>
 azure provider register --namespace Microsoft.ContainerService
 ``` 
+
+* Define las variables de entorno que utilizaremos
 
 ```bash
 set ADMIN_USERNAME=<tu_username>
@@ -33,7 +41,11 @@ set ACS_NAME=containerservice-%RESOURCE_GROUP%
 set LOCATION=westeurope
 set TEMPLATE_URI=https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-acs-dcos/azuredeploy.json
 set PARAMFILE=azuredeploy.parameters.json
+```
 
+* Despliega el clúster en el *resource group*
+
+```bash
 cd azure-arm
 azure group create -n %RESOURCE_GROUP% -l %LOCATION% --template-uri %TEMPLATE_URI% -e %PARAMFILE% --deployment-name %DEPLOYMENT_NAME%
 
