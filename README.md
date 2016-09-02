@@ -1,5 +1,13 @@
 # Prerequisitos
 
+![Pokemon Logo](http://vignette1.wikia.nocookie.net/es.pokemon/images/6/61/Logo_de_Pok%C3%A9mon_(EN).png)
+
+# Instalar las cli
+
+```
+npm install -g azure-cli
+```
+
 * Necesitarás las *cli* para interactuar con Azure. Instala [nodejs](https://nodejs.org/en/) previamente y a continuación  ```npm install -g azure-cli```
 * También necesitarás *ssh* en tu sistema. Si utilizas Windows la forma más sencilla de tenerlo es instalando [git for Windows](https://git-scm.com/download/win).
 * También tienes que tener una pareja de claves RSA. En Windows **y solo si no tienes previamente clave generada**: ```ssh-keygen -t rsa -b 2048 -C "email@dominio.com"``` y contesta *enter* a todo.
@@ -20,13 +28,14 @@ azure provider register --namespace Microsoft.ContainerService
 ```bash
 set ADMIN_USERNAME=<tu_username>
 set RESOURCE_GROUP=<un_nombre_lógico>
+set DEPLOYMENT_NAME=dcospokemon
 set ACS_NAME=containerservice-%RESOURCE_GROUP%
 set LOCATION=westeurope
 set TEMPLATE_URI=https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-acs-dcos/azuredeploy.json
 set PARAMFILE=azuredeploy.parameters.json
 
 cd azure-arm
-azure group create -n %RESOURCE_GROUP% -l %LOCATION% --template-uri %TEMPLATE_URI% -e %PARAMFILE%
+azure group create -n %RESOURCE_GROUP% -l %LOCATION% --template-uri %TEMPLATE_URI% -e %PARAMFILE% --deployment-name %DEPLOYMENT_NAME%
 
 azure group deployment show %RESOURCE_GROUP% azuredeploy | grep State
 ```
@@ -109,7 +118,7 @@ curl -X PUT -d "{ \"instances\": 3 }" -H "Content-type: application/json" http:/
 # Limpiar la cuenta
 
 ```
-azure group deployment delete --resource-group %RESOURCE_GROUP% --name azuredeploy
+azure group deployment delete --resource-group %RESOURCE_GROUP% --name %DEPLOYMENT_NAME%
 ``` 
  
  
