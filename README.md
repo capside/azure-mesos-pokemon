@@ -127,7 +127,7 @@ curl -X PUT -d "{ \"instances\": 3 }" -H "Content-type: application/json" http:/
 ## Limpiar la cuenta
 
 ```
-azure group deployment delete --resource-group %RESOURCE_GROUP% --name %DEPLOYMENT_NAME%
+azure group delete --name %RESOURCE_GROUP% 
 ``` 
  
  
