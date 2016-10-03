@@ -20,6 +20,9 @@
     "masterCount": {
       "value": 1
     },
+    "enableDiagnostics" : {
+	    "value" : true
+	  }
     "sshRSAPublicKey": {
       "value": "XXXXXXXXXXXXXXXXXXXXX"
     }
