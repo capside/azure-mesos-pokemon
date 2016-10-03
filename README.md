@@ -46,7 +46,7 @@ set PARAMFILE=azuredeploy.parameters.json
 cd azure-arm
 azure group create -n %RESOURCE_GROUP% -l %LOCATION% --template-uri %TEMPLATE_URI% -e %PARAMFILE% --deployment-name %DEPLOYMENT_NAME%
 
-azure group deployment show %RESOURCE_GROUP% azuredeploy | grep State
+azure group deployment show %RESOURCE_GROUP% %DEPLOYMENT_NAME% | grep State
 ```
 
 ## Gestionar clúster mediante web
