@@ -12,7 +12,6 @@
 
 ## Crear un clúster
 
-* **EDITA azuredeploy.parameters.json** modificando los parámetros correspondientes.
 * Configura las *cli*
 
 ```bash
@@ -40,6 +39,7 @@ set TEMPLATE_URI=https://raw.githubusercontent.com/Azure/azure-quickstart-templa
 set PARAMFILE=azuredeploy.parameters.json
 ```
 
+* **EDITA azuredeploy.parameters.json** modificando los parámetros correspondientes.
 * Despliega el clúster en el *resource group*
 
 ```bash
