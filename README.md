@@ -30,6 +30,12 @@ azure provider register --namespace Microsoft.Compute
 azure provider register --namespace Microsoft.ContainerService
 ``` 
 
+* Comprueba que tengas cuota suficiente 
+
+```bash
+azure vm list-usage --location westeurope
+```
+
 * Define las variables de entorno que utilizaremos
 
 ```bash
