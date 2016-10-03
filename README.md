@@ -24,6 +24,9 @@ azure login
 ```bash
 azure account list
 azure account set <tu_número_de_cuenta>
+azure provider register --namespace  Microsoft.Network
+azure provider register --namespace  Microsoft.Storage
+azure provider register --namespace  Microsoft.Compute
 azure provider register --namespace Microsoft.ContainerService
 ``` 
 
