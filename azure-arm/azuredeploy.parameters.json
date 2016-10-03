@@ -22,7 +22,7 @@
     },
     "enableDiagnostics" : {
 	    "value" : true
-	  }
+    },
     "sshRSAPublicKey": {
       "value": "XXXXXXXXXXXXXXXXXXXXX"
     }
