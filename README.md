@@ -90,12 +90,12 @@ ifconfig | grep "inet addr"
 azure resource list %RESOURCE_GROUP% --resource-type Microsoft.Compute/virtualMachineScaleSets --json  
 ``` 
 
-* Apunta los nombres de los vmss públicos y privados (propiedad *name*, por ejemplo "dcos-agent-public-2D554AAB-vmss0")
-* Aplicar el siguiente paso tanto al grupo público (3 instancias) como al privado (1 instancia)
+* Apunta los nombres del vmss público (propiedad *name*, por ejemplo "dcos-agent-public-2D554AAB-vmss0")
+* Aplicar el siguiente paso para modificar el número de instancias públicas
 
 ```
-SET SCALE_TEMPLATE=https://raw.githubusercontent.com/gbowerman/azure-myriad/master/vmss-scale-in-or-out.json
-azure group deployment create --resource-group %RESOURCE_GROUP% --template-uri %SCALE_TEMPLATE%
+SET PUBLIC_AGENTS_VMSS=<el nombre del vmss público>
+azure vmss scale --resource-group %RESOURCE_GROUP% --name %PUBLIC_AGENTS_VMSS% --new-capacity 3
 ```
 
 ## Desplegar aplicación
