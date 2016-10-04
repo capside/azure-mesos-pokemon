@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "dnsNamePrefix": {
-      "value": "cibpokemon"
+      "value": "XXXXXXXX"
     },
     "agentCount": {
       "value": 1
@@ -12,7 +12,7 @@
       "value": "Standard_D1"
     },
     "linuxAdminUsername": {
-      "value": "ciberado"
+      "value": "XXXXXXXX"
     },
     "orchestratorType": {
       "value": "DCOS"
@@ -24,7 +24,7 @@
 	    "value" : true
     },
     "sshRSAPublicKey": {
-      "value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC1Vk1RZG3HQeOXWjoG8coI2yOCHn4SLm7Y8tBcjT/bicIGQ99y0svMDGcqygypjUN7lpSzH0KWWl8UsRY3K/aAoZmj8exbwMdA/vopr+esbgUk0rVxdownqzY2zpS5RoYzcknNX04Kv6DzmHvXoaC0C0sIfAh7T9qBbeZuVs4iXgQWvfBdELEMejelOgW/KTgx3I8ij3tT10CCclFjHqYSoiissg4Q9WrLMZYssDkq6kjkBNYfKxAoZ5dV8pZ35OsedytCbskcl2aKWwXPD3n0L6I+ec+FHkou8oVZtx5iXjXgLgubBHgEoj5GM0a0eWH1M3Lfzd1e0rnKTKqNjRad email@dominio.com"
+      "value": "XXXXXXXX"
     }
   }
 }
