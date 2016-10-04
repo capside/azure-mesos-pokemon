@@ -1,13 +1,12 @@
 
-![Pokemon Logo](http://vignette1.wikia.nocookie.net/es.pokemon/images/6/61/Logo_de_Pok%C3%A9mon_(EN).png)
+![Pokemon Logo](http://vignette1.wikia.nocookie.net/es.pokemon/images/6/61/Logo_de_Pok$C3$A9mon_(EN).png)
 
 # Clústers Mesos en Azure con Pokémon
 
 ## Prerequisitos
 
 * Necesitarás las *cli* para interactuar con Azure. Instala [nodejs](https://nodejs.org/en/) previamente y a continuación  ```npm install -g azure-cli```
-* También necesitarás *ssh* en tu sistema. Si utilizas Windows la forma más sencilla de tenerlo es instalando [git for Windows](https://git-scm.com/download/win).
-* También tienes que tener una pareja de claves RSA. En Windows **y solo si no tienes previamente clave generada**: ```ssh-keygen -t rsa -b 2048 -C "email@dominio.com"``` y contesta *enter* a todo.
+* También te hará falta tener una clave RSA. **Solo si no tienes previamente clave generada**: ```ssh-keygen -t rsa -b 2048 -C "email@dominio.com"``` y contesta *enter* a todo.
 * Por último descarga este repositorio con ```git clone https://github.com/capside/azure-mesos-pokemon.git``` y ```cd azure-mesos-pokemon```
 
 ## Crear un clúster
@@ -39,63 +38,65 @@ azure vm list-usage --location westeurope
 * Define las variables de entorno que utilizaremos
 
 ```bash
-set ADMIN_USERNAME=<tu_username>
-set RESOURCE_GROUP=<un_nombre_lógico>
-set DEPLOYMENT_NAME=dcospokemon
-set ACS_NAME=containerservice-%RESOURCE_GROUP%
-set LOCATION=westeurope
-set TEMPLATE_URI=https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-acs-dcos/azuredeploy.json
-set PARAMFILE=azuredeploy.parameters.json
+ADMIN_USERNAME=<tu_username>
+RESOURCE_GROUP=<un_nombre_lógico>
+DEPLOYMENT_NAME=dcospokemon
+ACS_NAME=containerservice-$RESOURCE_GROUP
+LOCATION=westeurope
+TEMPLATE_URI=https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-acs-dcos/azuredeploy.json
+PARAMFILE=azuredeploy.parameters.json
 ```
 
-* **EDITA azuredeploy.parameters.json** modificando los parámetros correspondientes.
+* En Mac Puedes usar ```pbcopy < ~/.ssh/id_rsa.pub``` para enviar la clave pública al portapapeles (tienes que pegarla como último parámetro del fichero).
+* **EDITA azuredeploy.parameters.json** modificando los parámetros correspondientes. 
+
 * Despliega el clúster en el *resource group*
 
 ```bash
 cd azure-arm
-azure group create -n %RESOURCE_GROUP% -l %LOCATION% --template-uri %TEMPLATE_URI% -e %PARAMFILE% --deployment-name %DEPLOYMENT_NAME%
+azure group create -n $RESOURCE_GROUP -l $LOCATION --template-uri $TEMPLATE_URI -e $PARAMFILE --deployment-name $DEPLOYMENT_NAME$
 
-azure group deployment show %RESOURCE_GROUP% %DEPLOYMENT_NAME% | grep State
+azure group deployment show $RESOURCE_GROUP $DEPLOYMENT_NAME | grep State
 ```
 
 ## Gestionar clúster mediante web
 
 ```
-set MASTER=%RESOURCE_GROUP%mgmt.westeurope.cloudapp.azure.com
-set AGENTS=%RESOURCE_GROUP%agents.westeurope.cloudapp.azure.com
-start ssh -L 80:localhost:80 -N %ADMIN_USERNAME%@%MASTER% -p 2200 
-start http://localhost:80
+MASTER="$RESOURCE_GROUP"mgmt.westeurope.cloudapp.azure.com
+AGENTS="$RESOURCE_GROUP"agents.westeurope.cloudapp.azure.com
+sudo ssh -L 80:localhost:80 -N "$ADMIN_USERNAME"@"$MASTER" -p 2200 &
 ```
+
+* Abre http://localhost:80 en tu navegador
 
 ## Gestionar Mesos
 
-```
-start http://localhost:80/mesos
-```
+* Abre http://localhost:80/mesos 
+
 
 ## Administrar master node
 
 Visualizar cómo la IP pública del máster coincide con la que muestra el panel web.
 
 ```
-ssh %ADMIN_USERNAME%@%MASTER% -p 2200
+ssh "$ADMIN_USERNAME"@"$MASTER" -p 2200
 ifconfig | grep "inet addr"
 ```
 
 ## Redefinir el número de instancias en vmss público
 
-* Revisar vms-scale-in-or-out.json
+* Obtiene los vmss creados
 
 ```
-azure resource list %RESOURCE_GROUP% --resource-type Microsoft.Compute/virtualMachineScaleSets --json  
+azure resource list $RESOURCE_GROUP --resource-type Microsoft.Compute/virtualMachineScaleSets --json  
 ``` 
 
 * Apunta los nombres del vmss público (propiedad *name*, por ejemplo "dcos-agent-public-2D554AAB-vmss0")
 * Aplicar el siguiente paso para modificar el número de instancias públicas
 
 ```
-SET PUBLIC_AGENTS_VMSS=<el nombre del vmss público>
-azure vmss scale --resource-group %RESOURCE_GROUP% --name %PUBLIC_AGENTS_VMSS% --new-capacity 3
+PUBLIC_AGENTS_VMSS=<el nombre del vmss público>
+azure vmss scale --resource-group $RESOURCE_GROUP --name $PUBLIC_AGENTS_VMSS --new-capacity 3
 ```
 
 ## Desplegar aplicación
@@ -115,8 +116,9 @@ curl -X POST http://localhost/marathon/v2/apps -d @deploy-pokemon.json -H "Conte
 
 * Visualizar el estado en http://localhost/marathon
 
+* Abre http://"$AGENTS":8080
+
 ```
-start http://%AGENTS%:8080
 curl -s http://localhost/marathon/v2/apps | prettyjson | grep instances
 ```
 
@@ -128,7 +130,7 @@ curl -X PUT -d "{ \"instances\": 3 }" -H "Content-type: application/json" http:/
 
 ## Comprobar la resiliencia de los contenedores
 
-* Recargar la aplicación ```start http://%AGENTS%:8080```
+* Recargar la aplicación ```start http://$AGENTS$:8080```
 * Pulsar sobre uno de los Pokémon
 * Visualizar cómo desaparece el contenedor ```start http://localhost/#/nodes/list/``` 
 * En unos segundos reaparecerá un nuevo Pokémon 
@@ -136,7 +138,7 @@ curl -X PUT -d "{ \"instances\": 3 }" -H "Content-type: application/json" http:/
 ## Limpiar la cuenta
 
 ```
-azure group delete --name %RESOURCE_GROUP% 
+azure group delete --name $RESOURCE_GROUP 
 ``` 
  
  
