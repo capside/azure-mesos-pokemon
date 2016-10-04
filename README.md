@@ -133,6 +133,12 @@ curl -X PUT -d "{ \"instances\": 3 }" -H "Content-type: application/json" http:/
 * Visualizar cómo desaparece el contenedor ```start http://localhost/#/nodes/list/``` 
 * En unos segundos reaparecerá un nuevo Pokémon 
 
+## Usando la cli de DC-OS
+
+* Descarga e instala las cli para tu plataforma desde el [site oficial](https://dcos.io/docs/1.8/usage/cli/install/#windows)
+* Configura el acceso a través de localhost con ```dcos config set core.dcos_url http://localhost```
+* Prueba a listar las aplicaciones con ```dcos marathon app list```
+
 ## Limpiar la cuenta
 
 ```
