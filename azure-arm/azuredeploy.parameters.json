@@ -9,7 +9,7 @@
       "value": 1
     },
     "agentVMSize": {
-      "value": "Standard_A1"
+      "value": "Standard_D1"
     },
     "linuxAdminUsername": {
       "value": "XXXXXXXXXX"
