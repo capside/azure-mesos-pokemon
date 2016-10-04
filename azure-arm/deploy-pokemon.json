@@ -38,5 +38,5 @@
   "acceptedResourceRoles": [
     "slave_public"
   ],
-    "constraints" : [["hostname" : "UNIQUE"]]
+    "constraints" : [["hostname" , "UNIQUE"]]
 }
