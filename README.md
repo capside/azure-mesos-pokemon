@@ -1,5 +1,5 @@
 
-![Pokemon Logo](http://vignette1.wikia.nocookie.net/es.pokemon/images/6/61/Logo_de_Pok$C3$A9mon_(EN).png)
+![Pokemon Logo](https://raw.githubusercontent.com/capside/azure-mesos-pokemon/master/pokemon.png)
 
 # Clústers Mesos en Azure con Pokémon
 
@@ -136,7 +136,7 @@ curl -X PUT -d "{ \"instances\": 3 }" -H "Content-type: application/json" http:/
 
 ## Comprobar la resiliencia de los contenedores
 
-* Recargar la aplicación ```start http://$AGENTS$:8080```
+* Recargar la aplicación ```start http://$AGENTS:8080```
 * Pulsar sobre uno de los Pokémon
 * Visualizar cómo desaparece el contenedor ```start http://localhost/#/nodes/list/``` 
 * En unos segundos reaparecerá un nuevo Pokémon 
