@@ -70,7 +70,7 @@ ssh -L 8000:localhost:80 -N "$ADMIN_USERNAME"@"$MASTER" -p 2200 &
 * Si estás usando una terminal remota tendrás que montar un túnel también entre tu laptop y esa terminal:
 
 ```
-ssh -L 8000:localhost:8000 -N javi@13.88.20.107
+ssh -L 8000:localhost:8000 -N <usuario>@<terminal_remota>
 ```
 
 * Abre http://localhost:8000 en tu navegador
