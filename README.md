@@ -41,7 +41,7 @@ azure vm list-usage --location westeurope
 ```bash
 set ADMIN_USERNAME=<tu_username>
 set RESOURCE_GROUP=<un_nombre_lógico>
-set DEPLOYMENT_NAME=dcospokemon
+set DEPLOYMENT_NAME=<nombre_del_despliegue>
 set ACS_NAME=containerservice-%RESOURCE_GROUP%
 set LOCATION=westeurope
 set TEMPLATE_URI=https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-acs-dcos/azuredeploy.json
