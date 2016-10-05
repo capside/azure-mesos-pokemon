@@ -64,14 +64,20 @@ azure group deployment show $RESOURCE_GROUP $DEPLOYMENT_NAME | grep State
 ```
 MASTER="$RESOURCE_GROUP"mgmt.westeurope.cloudapp.azure.com
 AGENTS="$RESOURCE_GROUP"agents.westeurope.cloudapp.azure.com
-sudo ssh -L 80:localhost:80 -N "$ADMIN_USERNAME"@"$MASTER" -p 2200 &
+ssh -L 8000:localhost:80 -N "$ADMIN_USERNAME"@"$MASTER" -p 2200 &
 ```
 
-* Abre http://localhost:80 en tu navegador
+* Si estás usando una terminal remota tendrás que montar un túnel también entre tu laptop y esa terminal:
+
+```
+ssh -L 8000:localhost:8000 -N javi@13.88.20.107
+```
+
+* Abre http://localhost:8000 en tu navegador
 
 ## Gestionar Mesos
 
-* Abre http://localhost:80/mesos 
+* Abre http://localhost:8000/mesos 
 
 
 ## Administrar master node
