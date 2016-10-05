@@ -144,7 +144,7 @@ curl -X PUT -d "{ \"instances\": 3 }" -H "Content-type: application/json" http:/
 ## Usando la cli de DC-OS
 
 * Descarga e instala las cli para tu plataforma desde el [site oficial](https://dcos.io/docs/1.8/usage/cli/install/)
-* Configura el acceso a través de localhost con ```dcos config set core.dcos_url http://localhost```
+* Configura el acceso a través de localhost con ```dcos config set core.dcos_url http://localhost:8000```
 * Prueba a listar las aplicaciones con ```dcos marathon app list```
 
 ## Limpiar la cuenta
