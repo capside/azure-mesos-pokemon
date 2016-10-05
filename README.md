@@ -115,23 +115,23 @@ azure vmss scale --resource-group $RESOURCE_GROUP --name $PUBLIC_AGENTS_VMSS --n
 * Ver el [API](https://mesosphere.github.io/marathon/docs/rest-api.html) de Marathon
 
 ```
-curl -X POST http://localhost/marathon/v2/apps -d @deploy-pokemon.json -H "Content-type: application/json" | prettyjson
+curl -X POST http://localhost:8000/marathon/v2/apps -d @deploy-pokemon.json -H "Content-type: application/json" | prettyjson
 ```
 
 ## Visualizar el número de contenedores desplegados
 
-* Visualizar el estado en http://localhost/marathon
+* Visualizar el estado en http://localhost:8000/marathon
 
 * Abre http://"$AGENTS":8080
 
 ```
-curl -s http://localhost/marathon/v2/apps | prettyjson | grep instances
+curl -s http://localhost:8000/marathon/v2/apps | prettyjson | grep instances
 ```
 
 ## Modificar el número de contenedores
 
 ```
-curl -X PUT -d "{ \"instances\": 3 }" -H "Content-type: application/json" http://localhost/marathon/v2/apps/poki
+curl -X PUT -d "{ \"instances\": 3 }" -H "Content-type: application/json" http://localhost:8000/marathon/v2/apps/poki
 ```
 
 ## Comprobar la resiliencia de los contenedores
