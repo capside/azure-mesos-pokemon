@@ -1,55 +1,59 @@
 
 ![Pokemon Logo](http://vignette1.wikia.nocookie.net/es.pokemon/images/6/61/Logo_de_Pok%C3%A9mon_(EN).png)
 
-# Clústers Mesos en Azure con Pokémon
+# Mesos clusters with Pokémon
 
-## Prerequisitos
+## Prerequisites
 
-* Necesitarás las *cli* para interactuar con Azure. Instala [nodejs](https://nodejs.org/en/) previamente y a continuación  ```npm install -g azure-cli```
-* También necesitarás *ssh* en tu sistema. Si utilizas Windows la forma más sencilla de tenerlo es instalando [git for Windows](https://git-scm.com/download/win).
-* También tienes que tener una pareja de claves RSA. En Windows **y solo si no tienes previamente clave generada**: ```ssh-keygen -t rsa -b 2048 -C "email@dominio.com"``` y contesta *enter* a todo.
-* Por último descarga este repositorio con ```git clone https://github.com/capside/azure-mesos-pokemon.git``` y ```cd azure-mesos-pokemon```
+* You will need the *cli* in order to interact with Auzre. Install  [nodejs](https://nodejs.org/en/) and then execute  ```npm install -g azure-cli```
+* You will also need *ssh* in your system. If you are a Windows user the easier way to install it is [git for Windows](https://git-scm.com/download/win).
+* If you don't have a keypair stored in your system you can generate them using ```ssh-keygen -t rsa -b 2048 -C "email@dominio.com"```. **DON'T OVERWRITE ANY PREVIOUSLY CREATED KEYS**.
+* Lastly you can download this project by typing ```git clone https://github.com/capside/azure-mesos-pokemon.git``` and ```cd azure-mesos-pokemon```
 
-## Crear un clúster
+## Cluster creation
 
-* Configura las *cli*
+* *CLI* configuration
 
 ```bash
 azure config mode arm
 azure login
-``` 
-* Asegúrate de que tienes una suscripción correctamente activada
-* Si es tu primera vez es necesario registrar el servicio de contenedores
+```
+* Ensure your subscription is correctly activated
 
 ```bash
 azure account list
-azure account set <tu_número_de_suscripción>
+azure account set <subscription_number>
+```
+
+* If this is your first time with that account you will need to register the needed services
+
+```bash
 azure provider register --namespace Microsoft.Network
 azure provider register --namespace Microsoft.Storage
 azure provider register --namespace Microsoft.Compute
 azure provider register --namespace Microsoft.ContainerService
-``` 
+```
 
-* Comprueba que tengas cuota suficiente 
+* Check if your quota of CPUs is big enough
 
 ```bash
 azure vm list-usage --location westeurope
 ```
 
-* Define las variables de entorno que utilizaremos
+* Define some env variables
 
 ```bash
-set ADMIN_USERNAME=<tu_username>
-set RESOURCE_GROUP=<un_nombre_lógico>
-set DEPLOYMENT_NAME=<nombre_del_despliegue>
+set ADMIN_USERNAME=<you_username>
+set RESOURCE_GROUP=<a_logic_name>
+set DEPLOYMENT_NAME=<name_of_the_deployment>
 set ACS_NAME=containerservice-%RESOURCE_GROUP%
 set LOCATION=westeurope
 set TEMPLATE_URI=https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-acs-dcos/azuredeploy.json
 set PARAMFILE=azuredeploy.parameters.json
 ```
 
-* **EDITA azuredeploy.parameters.json** modificando los parámetros correspondientes.
-* Despliega el clúster en el *resource group*
+* **EDIT azuredeploy.parameters.json** and set the desired params
+* Deploy the cluster in the *resource group*
 
 ```bash
 cd azure-arm
@@ -58,92 +62,92 @@ azure group create -n %RESOURCE_GROUP% -l %LOCATION% --template-uri %TEMPLATE_UR
 azure group deployment show %RESOURCE_GROUP% %DEPLOYMENT_NAME% | grep State
 ```
 
-## Gestionar clúster mediante web
+## Manage the cluster using the web IU
 
-```
+* Stablish a ssh tunnel between your laptop and one master
+
+```bash
 set MASTER=%RESOURCE_GROUP%mgmt.westeurope.cloudapp.azure.com
 set AGENTS=%RESOURCE_GROUP%agents.westeurope.cloudapp.azure.com
-start ssh -L 80:localhost:80 -N %ADMIN_USERNAME%@%MASTER% -p 2200 
+start ssh -L 80:localhost:80 -N %ADMIN_USERNAME%@%MASTER% -p 2200
+```
+
+* Open the browser
+
+```bash
 start http://localhost:80
-```
-
-## Gestionar Mesos
-
-```
 start http://localhost:80/mesos
+start http://localhost:80/marathon
 ```
 
-## Administrar master node
+## Check the master node (optional)
 
-Visualizar cómo la IP pública del máster coincide con la que muestra el panel web.
+* You can check that the master node IP matchs the one shown by the web IU
 
 ```
 ssh %ADMIN_USERNAME%@%MASTER% -p 2200
 ifconfig | grep "inet addr"
 ```
 
-## Redefinir el número de instancias en vmss público
+## Increase the number of instances in the public VMSS
 
-* Revisar vms-scale-in-or-out.json
+* List the deployed VMSS
 
 ```
 azure resource list %RESOURCE_GROUP% --resource-type Microsoft.Compute/virtualMachineScaleSets --json  
-``` 
+```
 
-* Apunta los nombres del vmss público (propiedad *name*, por ejemplo "dcos-agent-public-2D554AAB-vmss0")
-* Aplicar el siguiente paso para modificar el número de instancias públicas
+* Identify the public VMSS (property *name*, for example "dcos-agent-public-2D554AAB-vmss0")
+* Modify the number of instances on that VMSS
 
 ```
-SET PUBLIC_AGENTS_VMSS=<el nombre del vmss público>
+SET PUBLIC_AGENTS_VMSS=<name_of_the_public_VMSS>
 azure vmss scale --resource-group %RESOURCE_GROUP% --name %PUBLIC_AGENTS_VMSS% --new-capacity 3
 ```
 
-## Desplegar aplicación
+## Deploy your pokémon!
 
-* Instalar prettyjson con ```npm install -g prettyjson```
-* Si estás con Windows, instalar [curl](https://curl.haxx.se/download.html)
-* Explicar la aplicación
-* Revisar conceptos de Docker
-* Revisar [deploy-pokemon.json](https://github.com/capside/azure-mesos-pokemon/blob/master/azure-arm/deploy-pokemon.json)
-* Ver el [API](https://mesosphere.github.io/marathon/docs/rest-api.html) de Marathon
+* Take a look to the deployment descriptor in the file [deploy-pokemon.json](https://github.com/capside/azure-mesos-pokemon/blob/master/azure-arm/deploy-pokemon.json)
+* Check the [Marathon API](https://mesosphere.github.io/marathon/docs/rest-api.html) (optional)
+* Execute a HTTP order to deploy the application
 
 ```
-curl -X POST http://localhost/marathon/v2/apps -d @deploy-pokemon.json -H "Content-type: application/json" | prettyjson
+curl -X POST http://localhost/marathon/v2/apps -d @deploy-pokemon.json -H "Content-type: application/json"
 ```
 
-## Visualizar el número de contenedores desplegados
+## Visualize the deployed containers
 
-* Visualizar el estado en http://localhost/marathon
+* Check again the [Marathon IU](http://localhost/marathon)
+* Access the application using your browser with ```http://%AGENTS%:8080```
+* Use the API to list the deployed applications
 
 ```
-start http://%AGENTS%:8080
 curl -s http://localhost/marathon/v2/apps | prettyjson | grep instances
 ```
 
-## Modificar el número de contenedores
+## Scaling containers
+
+* Scale up the number of containers using the API
 
 ```
 curl -X PUT -d "{ \"instances\": 3 }" -H "Content-type: application/json" http://localhost/marathon/v2/apps/poki
 ```
 
-## Comprobar la resiliencia de los contenedores
+## Check the resilience of the containers
 
-* Recargar la aplicación ```start http://%AGENTS%:8080```
-* Pulsar sobre uno de los Pokémon
-* Visualizar cómo desaparece el contenedor ```start http://localhost/#/nodes/list/``` 
-* En unos segundos reaparecerá un nuevo Pokémon 
+* Reload the app in your browser ```http://%AGENTS%:8080```
+* Click over the image of one of the Pokémon
+* Visualize how the container disappears ```http://localhost/#/nodes/list/```
+* In a few seconds a new container should be respawn
 
-## Usando la cli de DC-OS
+## Using the DC-OS CLI
 
-* Descarga e instala las cli para tu plataforma desde el [site oficial](https://dcos.io/docs/1.8/usage/cli/install/#windows)
-* Configura el acceso a través de localhost con ```dcos config set core.dcos_url http://localhost```
-* Prueba a listar las aplicaciones con ```dcos marathon app list```
+* Download and install the cli from [site oficial](https://dcos.io/docs/1.8/usage/cli/install/#windows)
+* Configure the API endpoint with ```dcos config set core.dcos_url http://localhost```
+* Try to list the deployed apps with ```dcos marathon app list```
 
-## Limpiar la cuenta
+## Clean up (**IMPORTANT**)
 
 ```
-azure group delete --name %RESOURCE_GROUP% 
-``` 
- 
- 
- 
+azure group delete --name %RESOURCE_GROUP%
+```
