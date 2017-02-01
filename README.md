@@ -79,15 +79,15 @@ ssh -L 8000:localhost:80 -N "$ADMIN_USERNAME"@"$MASTER" -p 2200 &
 ssh -L 8000:localhost:8000 -N <usuario>@<terminal_remota>
 ```
 
-* Open http://localhost:8000 in your local browser
+* Open [http://localhost:8000](http://localhost:8000) in your local browser
 
 ## Manage Mesos
 
-* Open http://localhost:8000/mesos 
+* Open [http://localhost:8000/mesos](http://localhost:8000/mesos) 
 
 ## Manage Marathon
 
-* Open http://localhost:8000/mesos 
+* Open [http://localhost:8000/mesos](http://localhost:8000/mesos) 
 
 ## Check the master node (optional)
 
