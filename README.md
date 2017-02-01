@@ -5,7 +5,7 @@
 
 ## Prerequisites
 
-* You will need the *cli* in order to interact with Auzre. Install  [nodejs](https://nodejs.org/en/) and then execute  ```npm install -g azure-cli```
+* You will need the *cli* in order to interact with Auzre. Install  [nodejs](https://nodejs.org/en/) and then execute  ```npm install -g azure-cli``` or use the installer: https://docs.microsoft.com/en-us/azure/xplat-cli-install#option-2-use-an-installer
 * You will also need *ssh* in your system. If you are a Windows user the easier way to install it is [git for Windows](https://git-scm.com/download/win).
 * If you don't have a keypair stored in your system you can generate them using ```ssh-keygen -t rsa -b 2048 -C "email@dominio.com"```. **DON'T OVERWRITE ANY PREVIOUSLY CREATED KEYS**.
 * Lastly you can download this project by typing ```git clone https://github.com/capside/azure-mesos-pokemon.git``` and ```cd azure-mesos-pokemon```
@@ -40,11 +40,11 @@ azure provider register --namespace Microsoft.ContainerService
 azure vm list-usage --location westeurope
 ```
 
-* Define some env variables
+* Define some environment variables
 
 ```bash
-set ADMIN_USERNAME=<you_username>
-set RESOURCE_GROUP=<a_logic_name>
+set ADMIN_USERNAME=<your_username>
+set RESOURCE_GROUP=<a_logical_name>
 set DEPLOYMENT_NAME=<name_of_the_deployment>
 set ACS_NAME=containerservice-%RESOURCE_GROUP%
 set LOCATION=westeurope
@@ -52,8 +52,10 @@ set TEMPLATE_URI=https://raw.githubusercontent.com/Azure/azure-quickstart-templa
 set PARAMFILE=azuredeploy.parameters.json
 ```
 
-* **EDIT azuredeploy.parameters.json** and set the desired params
-* Deploy the cluster in the *resource group*
+* **EDIT azuredeploy.parameters.json** and set the desired parameters
+* TIP: On Windows you can use `` `type id_rsa.pub | clip``` to send the public key to the clipboard (you have to paste it as the last parameter of the file).
+
+* Deploy the cluster to the *resource group*
 
 ```bash
 cd azure-arm
@@ -64,7 +66,7 @@ azure group deployment show %RESOURCE_GROUP% %DEPLOYMENT_NAME% | grep State
 
 ## Manage the cluster using the web IU
 
-* Stablish a ssh tunnel between your laptop and one master
+* Establsih an ssh tunnel between your laptop and one master
 
 ```bash
 set MASTER=%RESOURCE_GROUP%mgmt.westeurope.cloudapp.azure.com
@@ -72,17 +74,19 @@ set AGENTS=%RESOURCE_GROUP%agents.westeurope.cloudapp.azure.com
 start ssh -L 80:localhost:80 -N %ADMIN_USERNAME%@%MASTER% -p 2200
 ```
 
-* Open the browser
+* Open http://localhost:80 in your local browser
 
-```bash
-start http://localhost:80
-start http://localhost:80/mesos
-start http://localhost:80/marathon
-```
+## Manage Mesos
+
+* Open http://localhost:8000/mesos 
+
+## Manage Marathon
+
+* Open http://localhost:8000/mesos 
 
 ## Check the master node (optional)
 
-* You can check that the master node IP matchs the one shown by the web IU
+* You can check that the master node IP matches the one shown by the web IU
 
 ```
 ssh %ADMIN_USERNAME%@%MASTER% -p 2200
@@ -105,11 +109,12 @@ SET PUBLIC_AGENTS_VMSS=<name_of_the_public_VMSS>
 azure vmss scale --resource-group %RESOURCE_GROUP% --name %PUBLIC_AGENTS_VMSS% --new-capacity 3
 ```
 
-## Deploy your pokémon!
+## Deploy your Pokémon!
 
+* If you are running windows, install [curl](https://curl.haxx.se/download.html)
 * Take a look to the deployment descriptor in the file [deploy-pokemon.json](https://github.com/capside/azure-mesos-pokemon/blob/master/azure-arm/deploy-pokemon.json)
-* Check the [Marathon API](https://mesosphere.github.io/marathon/docs/rest-api.html) (optional)
-* Execute a HTTP order to deploy the application
+* Reveiew the [Marathon API](https://mesosphere.github.io/marathon/docs/rest-api.html) (optional)
+* Execute a HTTP request to deploy the application:
 
 ```
 curl -X POST http://localhost/marathon/v2/apps -d @deploy-pokemon.json -H "Content-type: application/json"
@@ -117,7 +122,7 @@ curl -X POST http://localhost/marathon/v2/apps -d @deploy-pokemon.json -H "Conte
 
 ## Visualize the deployed containers
 
-* Check again the [Marathon IU](http://localhost/marathon)
+* Check again the [Marathon UI](http://localhost/marathon)
 * Access the application using your browser with ```http://%AGENTS%:8080```
 * Use the API to list the deployed applications
 
@@ -137,12 +142,12 @@ curl -X PUT -d "{ \"instances\": 3 }" -H "Content-type: application/json" http:/
 
 * Reload the app in your browser ```http://%AGENTS%:8080```
 * Click over the image of one of the Pokémon
-* Visualize how the container disappears ```http://localhost/#/nodes/list/```
+* Visualise how the container disappears ```http://localhost/#/nodes/list/```
 * In a few seconds a new container should be respawn
 
 ## Using the DC-OS CLI
 
-* Download and install the cli from [site oficial](https://dcos.io/docs/1.8/usage/cli/install/#windows)
+* Download and install the cli from [official site](https://dcos.io/docs/1.8/usage/cli/install/#windows)
 * Configure the API endpoint with ```dcos config set core.dcos_url http://localhost```
 * Try to list the deployed apps with ```dcos marathon app list```
 
