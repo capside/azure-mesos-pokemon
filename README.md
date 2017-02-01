@@ -117,7 +117,6 @@ azure vmss scale --resource-group $RESOURCE_GROUP --name $PUBLIC_AGENTS_VMSS --n
 ## Deploy your Pokémon!
 
 * Install prettyjson with ```npm install -g prettyjson```
-* If you are running windows, install [curl](https://curl.haxx.se/download.html)
 * Take a look to the deployment descriptor in the file [deploy-pokemon.json](https://github.com/capside/azure-mesos-pokemon/blob/master/azure-arm/deploy-pokemon.json)
 * Reveiew the [Marathon API](https://mesosphere.github.io/marathon/docs/rest-api.html) (optional)
 * Execute a HTTP request to deploy the application:
