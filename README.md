@@ -53,7 +53,7 @@ set PARAMFILE=azuredeploy.parameters.json
 ```
 
 * **EDIT azuredeploy.parameters.json** and set the desired parameters
-* TIP: On Windows you can use `` `type id_rsa.pub | clip``` to send the public key to the clipboard (you have to paste it as the last parameter of the file).
+* TIP: On Windows you can use ```type id_rsa.pub | clip``` to send the public key to the clipboard (you have to paste it as the last parameter of the file).
 
 * Deploy the cluster to the *resource group*
 
@@ -71,18 +71,18 @@ azure group deployment show %RESOURCE_GROUP% %DEPLOYMENT_NAME% | grep State
 ```bash
 set MASTER=%RESOURCE_GROUP%mgmt.westeurope.cloudapp.azure.com
 set AGENTS=%RESOURCE_GROUP%agents.westeurope.cloudapp.azure.com
-start ssh -L 80:localhost:80 -N %ADMIN_USERNAME%@%MASTER% -p 2200
+start ssh -L 8000:localhost:80 -N %ADMIN_USERNAME%@%MASTER% -p 2200
 ```
 
-* Open http://localhost:80 in your local browser
+* Open [http://localhost:8000](http://localhost:8000) in your local browser
 
 ## Manage Mesos
 
-* Open http://localhost:8000/mesos 
+* Open [http://localhost:8000/mesos](http://localhost:8000/mesos) 
 
 ## Manage Marathon
 
-* Open http://localhost:8000/mesos 
+* Open [http://localhost:8000/mesos](http://localhost:8000/mesos) 
 
 ## Check the master node (optional)
 
@@ -117,17 +117,17 @@ azure vmss scale --resource-group %RESOURCE_GROUP% --name %PUBLIC_AGENTS_VMSS% -
 * Execute a HTTP request to deploy the application:
 
 ```
-curl -X POST http://localhost/marathon/v2/apps -d @deploy-pokemon.json -H "Content-type: application/json"
+curl -X POST http://localhost:8000/marathon/v2/apps -d @deploy-pokemon.json -H "Content-type: application/json"
 ```
 
 ## Visualize the deployed containers
 
-* Check again the [Marathon UI](http://localhost/marathon)
+* Check again the [Marathon UI](http://localhost:8000/marathon)
 * Access the application using your browser with ```http://%AGENTS%:8080```
 * Use the API to list the deployed applications
 
 ```
-curl -s http://localhost/marathon/v2/apps | prettyjson | grep instances
+curl -s http://localhost:8000/marathon/v2/apps | prettyjson | grep instances
 ```
 
 ## Scaling containers
@@ -142,13 +142,13 @@ curl -X PUT -d "{ \"instances\": 3 }" -H "Content-type: application/json" http:/
 
 * Reload the app in your browser ```http://%AGENTS%:8080```
 * Click over the image of one of the Pokémon
-* Visualise how the container disappears ```http://localhost/#/nodes/list/```
+* Visualise how the container disappears ```http://localhost:8000/#/nodes/list/```
 * In a few seconds a new container should be respawn
 
 ## Using the DC-OS CLI
 
 * Download and install the cli from [official site](https://dcos.io/docs/1.8/usage/cli/install/#windows)
-* Configure the API endpoint with ```dcos config set core.dcos_url http://localhost```
+* Configure the API endpoint with ```dcos config set core.dcos_url http://localhost:8000```
 * Try to list the deployed apps with ```dcos marathon app list```
 
 ## Clean up (**IMPORTANT**)
