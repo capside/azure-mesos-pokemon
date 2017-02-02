@@ -82,7 +82,7 @@ start ssh -L 8000:localhost:80 -N %ADMIN_USERNAME%@%MASTER% -p 2200
 
 ## Manage Marathon
 
-* Open [http://localhost:8000/mesos](http://localhost:8000/mesos) 
+* Open [http://localhost:8000/marathon](http://localhost:8000/marathon) 
 
 ## Check the master node (optional)
 
@@ -105,7 +105,7 @@ azure resource list %RESOURCE_GROUP% --resource-type Microsoft.Compute/virtualMa
 * Modify the number of instances on that VMSS
 
 ```
-SET PUBLIC_AGENTS_VMSS=<name_of_the_public_VMSS>
+set PUBLIC_AGENTS_VMSS=<name_of_the_public_VMSS>
 azure vmss scale --resource-group %RESOURCE_GROUP% --name %PUBLIC_AGENTS_VMSS% --new-capacity 3
 ```
 
