@@ -135,7 +135,7 @@ curl -s http://localhost:8000/marathon/v2/apps | prettyjson | grep instances
 * Scale up the number of containers using the API
 
 ```
-curl -X PUT -d "{ \"instances\": 3 }" -H "Content-type: application/json" http://localhost/marathon/v2/apps/poki
+curl -X PUT -d "{ \"instances\": 3 }" -H "Content-type: application/json" http://localhost:8000/marathon/v2/apps/poki
 ```
 
 ## Check the resilience of the containers
