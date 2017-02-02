@@ -145,7 +145,7 @@ curl -X PUT -d "{ \"instances\": 3 }" -H "Content-type: application/json" http:/
 
 ## Check the resilience of the containers
 
-* Reload the app in your browser ```http://%AGENTS%:8080```
+* Reload the app in your browser ```http://"$AGENTS":8080```
 * Click over the image of one of the Pokémon
 * Visualise how the container disappears ```http://localhost:8000/#/nodes/list/```
 * In a few seconds a new container should be respawn
