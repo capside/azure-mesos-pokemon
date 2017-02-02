@@ -61,12 +61,12 @@ set PARAMFILE=azuredeploy.parameters.json
 cd azure-arm
 azure group create -n %RESOURCE_GROUP% -l %LOCATION% --template-uri %TEMPLATE_URI% -e %PARAMFILE% --deployment-name %DEPLOYMENT_NAME%
 
-azure group deployment show %RESOURCE_GROUP% %DEPLOYMENT_NAME% | grep State
+azure group deployment show %RESOURCE_GROUP% %DEPLOYMENT_NAME% | findstr State
 ```
 
 ## Manage the cluster using the web IU
 
-* Establsih an ssh tunnel between your laptop and one master
+* Establish an ssh tunnel between your laptop and one master
 
 ```bash
 set MASTER=%RESOURCE_GROUP%mgmt.westeurope.cloudapp.azure.com
