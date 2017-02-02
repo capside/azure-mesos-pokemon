@@ -123,7 +123,7 @@ curl -X POST http://localhost:8000/marathon/v2/apps -d @deploy-pokemon.json -H "
 ## Visualize the deployed containers
 
 * Check again the [Marathon UI](http://localhost:8000/marathon)
-* Access the application using your browser with ```http://%AGENTS%:8080```
+* Access the application using your browser with ```start http://%AGENTS%:8080```
 * Use the API to list the deployed applications
 
 ```
@@ -140,7 +140,7 @@ curl -X PUT -d "{ \"instances\": 3 }" -H "Content-type: application/json" http:/
 
 ## Check the resilience of the containers
 
-* Reload the app in your browser ```http://%AGENTS%:8080```
+* Reload the app in your browser ```start http://%AGENTS%:8080```
 * Click over the image of one of the Pokémon
 * Visualise how the container disappears ```http://localhost:8000/#/nodes/list/```
 * In a few seconds a new container should be respawn
