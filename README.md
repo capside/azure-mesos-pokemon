@@ -142,10 +142,10 @@ curl -X PUT -d "{ \"instances\": 3 }" -H "Content-type: application/json" http:/
 
 * Reload the app in your browser ```start http://%AGENTS%:8080```
 * Click over the image of one of the Pokémon
-* Visualise how the container disappears ```http://localhost:8000/#/nodes/list/```
+* Visualise how the container disappears ```http://localhost:8000/#/services/%2Fpoki/```
 * In a few seconds a new container should be respawn
 
-## Using the DC-OS CLI
+## Using the DC-OS CLI (optional)
 
 * Download and install the cli from [official site](https://dcos.io/docs/1.8/usage/cli/install/#windows)
 * Configure the API endpoint with ```dcos config set core.dcos_url http://localhost:8000```
