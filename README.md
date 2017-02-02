@@ -65,7 +65,7 @@ azure group deployment show $RESOURCE_GROUP $DEPLOYMENT_NAME | grep State
 
 ## Manage the cluster using the web IU
 
-* Establsih an ssh tunnel between your laptop and one master
+* Establish an ssh tunnel between your laptop and one master
 
 ```
 MASTER="$RESOURCE_GROUP"mgmt.westeurope.cloudapp.azure.com
