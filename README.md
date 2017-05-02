@@ -14,29 +14,28 @@
 * *CLI* configuration
 
 ```bash
-azure config mode arm
-azure login
+az login
 ``` 
 * Ensure your subscription is correctly activated
 
 ```bash
-azure account list
-azure account set <tu_número_de_cuenta>
+az account list --output table
+az account set --subscription "<subscription name from above>"
 ``` 
 
 * If this is your first time with that account you will need to register the needed services
 
 ```bash
-azure provider register --namespace Microsoft.Network
-azure provider register --namespace Microsoft.Storage
-azure provider register --namespace Microsoft.Compute
-azure provider register --namespace Microsoft.ContainerService
+az provider register --namespace Microsoft.Network
+az provider register --namespace Microsoft.Storage
+az provider register --namespace Microsoft.Compute
+az provider register --namespace Microsoft.ContainerService
 ``` 
 
 * Check if your quota of CPUs is big enough
 
 ```bash
-azure vm list-usage --location westeurope
+az vm list-usage --location westeurope --output table --query [*].[currentValue,limit,name.value]
 ```
 
 * Define some environment variables
@@ -58,9 +57,10 @@ PARAMFILE=azuredeploy.parameters.json
 
 ```bash
 cd azure-arm
-azure group create -n $RESOURCE_GROUP -l $LOCATION --template-uri $TEMPLATE_URI -e $PARAMFILE --deployment-name $DEPLOYMENT_NAME
+az group create --name $RESOURCE_GROUP --location $LOCATION
+az group deployment create --resource-group $RESOURCE_GROUP --template-uri $TEMPLATE_URI --parameters @$PARAMFILE --name $DEPLOYMENT_NAME --no-wait
 
-azure group deployment show $RESOURCE_GROUP $DEPLOYMENT_NAME | grep State
+az group deployment show --resource-group $RESOURCE_GROUP --name $DEPLOYMENT_NAME --output json | grep State
 ```
 
 ## Manage the cluster using the web IU
@@ -76,7 +76,7 @@ ssh -L 8000:localhost:80 -N "$ADMIN_USERNAME"@"$MASTER" -p 2200 &
 * Note if you are running these commands on a remote system you will also need to establish a tunnel from your laptop to the remote system (as we'll use this tunnel to browse locally the web interface).
 
 ```
-ssh -L 8000:localhost:8000 -N <usuario>@<terminal_remota>
+ssh -L 8000:localhost:8000 -N <user>@<remote_system>
 ```
 
 * Open [http://localhost:8000](http://localhost:8000) in your local browser
@@ -103,15 +103,15 @@ ifconfig | grep "inet addr"
 * List the deployed VMSS
 
 ```
-azure resource list $RESOURCE_GROUP --resource-type Microsoft.Compute/virtualMachineScaleSets --json  
+az resource list --resource-group $RESOURCE_GROUP --resource-type Microsoft.Compute/virtualMachineScaleSets
 ``` 
 
 * Identify the public VMSS (property *name*, for example "dcos-agent-public-2D554AAB-vmss0")
 * Modify the number of instances on that VMSS
 
 ```
-PUBLIC_AGENTS_VMSS=<el nombre del vmss público>
-azure vmss scale --resource-group $RESOURCE_GROUP --name $PUBLIC_AGENTS_VMSS --new-capacity 3
+PUBLIC_AGENTS_VMSS=<the name of the public vmss>
+az vmss scale --resource-group $RESOURCE_GROUP --name $PUBLIC_AGENTS_VMSS --new-capacity 3
 ```
 
 ## Deploy your Pokémon!
@@ -159,7 +159,7 @@ curl -X PUT -d "{ \"instances\": 3 }" -H "Content-type: application/json" http:/
 ## Clean up (**IMPORTANT**)
 
 ```
-azure group delete --name $RESOURCE_GROUP 
+az group delete --name $RESOURCE_GROUP 
 ``` 
  
  
