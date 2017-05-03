@@ -20,7 +20,7 @@ az login
 
 ```bash
 az account list --output table
-az account set --subscription "<subscription name from above>"
+az account set --subscription <subscription_id>
 ``` 
 
 * If this is your first time with that account you will need to register the needed services
