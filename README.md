@@ -22,7 +22,7 @@ azure login
 
 ```bash
 azure account list
-azure account set <subscription_number>
+azure account set <subscription_id>
 ```
 
 * If this is your first time with that account you will need to register the needed services
