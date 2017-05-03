@@ -21,7 +21,7 @@ azure login
 
 ```bash
 azure account list
-azure account set <tu_número_de_cuenta>
+azure account set <subscription_id>
 ``` 
 
 * If this is your first time with that account you will need to register the needed services
@@ -76,7 +76,7 @@ ssh -L 8000:localhost:80 -N "$ADMIN_USERNAME"@"$MASTER" -p 2200 &
 * Note if you are running these commands on a remote system you will also need to establish a tunnel from your laptop to the remote system (as we'll use this tunnel to browse locally the web interface).
 
 ```
-ssh -L 8000:localhost:8000 -N <usuario>@<terminal_remota>
+ssh -L 8000:localhost:8000 -N <user>@<remote_system>
 ```
 
 * Open [http://localhost:8000](http://localhost:8000) in your local browser
