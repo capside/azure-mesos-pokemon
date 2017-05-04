@@ -15,29 +15,28 @@
 * *CLI* configuration
 
 ```bash
-azure config mode arm
-azure login
+az login
 ```
 * Ensure your subscription is correctly activated
 
 ```bash
-azure account list
-azure account set <subscription_id>
+az account list --output table
+az account set --subscription <subscription_id>
 ```
 
 * If this is your first time with that account you will need to register the needed services
 
 ```bash
-azure provider register --namespace Microsoft.Network
-azure provider register --namespace Microsoft.Storage
-azure provider register --namespace Microsoft.Compute
-azure provider register --namespace Microsoft.ContainerService
+az provider register --namespace Microsoft.Network
+az provider register --namespace Microsoft.Storage
+az provider register --namespace Microsoft.Compute
+az provider register --namespace Microsoft.ContainerService
 ```
 
 * Check if your quota of CPUs is big enough
 
 ```bash
-azure vm list-usage --location westeurope
+az vm list-usage --location westeurope --output table --query [*].[currentValue,limit,name.value]
 ```
 
 * Define some environment variables
@@ -59,9 +58,10 @@ set PARAMFILE=azuredeploy.parameters.json
 
 ```bash
 cd azure-arm
-azure group create -n %RESOURCE_GROUP% -l %LOCATION% --template-uri %TEMPLATE_URI% -e %PARAMFILE% --deployment-name %DEPLOYMENT_NAME%
+az group create --name %RESOURCE_GROUP% --location %LOCATION%
+az group deployment create --resource-group %RESOURCE_GROUP% --template-uri %TEMPLATE_URI% --parameters @%PARAMFILE% --name %DEPLOYMENT_NAME% --no-wait
 
-azure group deployment show %RESOURCE_GROUP% %DEPLOYMENT_NAME% | findstr State
+az group deployment show --resource-group %RESOURCE_GROUP% --name %DEPLOYMENT_NAME% --output json | findstr State
 ```
 
 ## Manage the cluster using the web IU
@@ -98,7 +98,7 @@ ifconfig | grep "inet addr"
 * List the deployed VMSS
 
 ```
-azure resource list %RESOURCE_GROUP% --resource-type Microsoft.Compute/virtualMachineScaleSets --json  
+az resource list --resource-group %RESOURCE_GROUP% --resource-type Microsoft.Compute/virtualMachineScaleSets --output table
 ```
 
 * Identify the public VMSS (property *name*, for example "dcos-agent-public-2D554AAB-vmss0")
@@ -106,7 +106,7 @@ azure resource list %RESOURCE_GROUP% --resource-type Microsoft.Compute/virtualMa
 
 ```
 set PUBLIC_AGENTS_VMSS=<name_of_the_public_VMSS>
-azure vmss scale --resource-group %RESOURCE_GROUP% --name %PUBLIC_AGENTS_VMSS% --new-capacity 3
+az vmss scale --resource-group %RESOURCE_GROUP% --name %PUBLIC_AGENTS_VMSS% --new-capacity 3
 ```
 
 ## Deploy your Pokémon!
@@ -154,5 +154,5 @@ curl -X PUT -d "{ \"instances\": 3 }" -H "Content-type: application/json" http:/
 ## Clean up (**IMPORTANT**)
 
 ```
-azure group delete --name %RESOURCE_GROUP%
+az group delete --name %RESOURCE_GROUP%
 ```
