@@ -5,8 +5,9 @@
 
 ## Prerequisites
 
-* You will need the *cli* in order to interact with Auzre. Install  [nodejs](https://nodejs.org/en/) and then execute  ```npm install -g azure-cli``` or use the installer: https://docs.microsoft.com/en-us/azure/xplat-cli-install#option-2-use-an-installer
+* You will need the *cli* in order to interact with Auzre. These instructions are based on the Azure CLI v2.0, instructions for installation can be found here: https://docs.microsoft.com/en-us/cli/azure/install-azure-cli
 * You will also need *ssh* in your system. If you are a Windows user the easier way to install it is [git for Windows](https://git-scm.com/download/win).
+* You will also need cURL installed, again for Windows users you can find it here: https://curl.haxx.se/download.html
 * If you don't have a keypair stored in your system you can generate them using ```ssh-keygen -t rsa -b 2048 -C "email@dominio.com"```. **DON'T OVERWRITE ANY PREVIOUSLY CREATED KEYS**.
 * Lastly you can download this project by typing ```git clone https://github.com/capside/azure-mesos-pokemon.git``` and ```cd azure-mesos-pokemon```
 
