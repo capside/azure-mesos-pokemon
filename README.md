@@ -5,7 +5,7 @@
 
 ## Prerequisites
 
-* You will need the *cli* in order to interact with Auzre. Install  [nodejs](https://nodejs.org/en/) and then execute  ```npm install -g azure-cli```
+* You will need the *cli* in order to interact with Auzre. These instructions are based on the Azure CLI v2.0, instructions for installation can be found here: https://docs.microsoft.com/en-us/cli/azure/install-azure-cli
 * If you don't have a keypair stored in your system you can generate them using ```ssh-keygen -t rsa -b 2048 -C "email@dominio.com"```. **DON'T OVERWRITE ANY PREVIOUSLY CREATED KEYS**.
 * Lastly you can download this project by typing ```git clone https://github.com/capside/azure-mesos-pokemon.git``` and ```cd azure-mesos-pokemon```
 
@@ -103,7 +103,7 @@ ifconfig | grep "inet addr"
 * List the deployed VMSS
 
 ```
-az resource list --resource-group $RESOURCE_GROUP --resource-type Microsoft.Compute/virtualMachineScaleSets
+az resource list --resource-group $RESOURCE_GROUP --resource-type Microsoft.Compute/virtualMachineScaleSets --output table
 ``` 
 
 * Identify the public VMSS (property *name*, for example "dcos-agent-public-2D554AAB-vmss0")
